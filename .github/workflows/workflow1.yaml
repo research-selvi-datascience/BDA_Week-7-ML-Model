@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  workflow_dispatch
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - run: | 
+        echo ${{ github.workspace }}
+        echo $GITHUB_WORKSPACE       
+
+    - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+    - name: Confirm Python Version
+      run: 
+        python --version
+
+    - name: Clean Data
+      run: |
+        cd ModelCleaning
+        pip install pandas
+        python cleandata.py
+
+    - name: Train test
+      run: |
+        cd ModelCleaning
+        pip install scikit-learn joblib
+        python train_test.py
